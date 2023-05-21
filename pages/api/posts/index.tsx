@@ -6,7 +6,7 @@ import { postData } from "@/app/Posts";
 export default async(req:NextApiRequest, res:NextApiResponse)=>{
     // await new Promise((resolve)=>setTimeout(resolve,4000))
     if(req.method==="GET"){
-        connection.query(`SELECT * FROM users`,
+        connection.query(`SELECT * FROM posts`,
         (err,results:postData)=>{
             if(err){
                 console.log(err)
@@ -17,7 +17,7 @@ export default async(req:NextApiRequest, res:NextApiResponse)=>{
     }else{
         if(req.method==="POST"){
             const {title,body}=req.body
-            connection.query(`INSERT INTO users (title,body) VALUES (?,?)`,
+            connection.query(`INSERT INTO posts (title,body) VALUES (?,?)`,
             [title,body],
             (err)=>{
                 if(err){
@@ -28,10 +28,10 @@ export default async(req:NextApiRequest, res:NextApiResponse)=>{
             }
             )
         }else{
-            const {title,body,id}=req.body
             if(req.method==="PUT"){
+                const {title,body,id}=req.body
                 if(req.body.title && req.body.body){
-                    connection.query(`UPDATE users SET title=?,body=? WHERE id=?`,
+                    connection.query(`UPDATE posts SET title=?,body=? WHERE id=?`,
                     [title,body,id],
                     (err)=>{
                         if(err){
@@ -42,7 +42,7 @@ export default async(req:NextApiRequest, res:NextApiResponse)=>{
                     }
                     )
                 }else{
-                    connection.query("UPDATE users SET status=2 WHERE id=?",
+                    connection.query("UPDATE posts SET status=2 WHERE id=?",
                     [id],
                     (err)=>{
                         if(err){
